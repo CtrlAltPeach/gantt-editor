@@ -1,4 +1,5 @@
 import { GanttBar } from "../types/gantt";
+import { tokens } from "../styles/tokens";
 
 /** Результат вычисления позиции полосы внутри строки при наложениях. */
 export interface BarLayout {
@@ -73,7 +74,10 @@ export function computeLayout(bars: GanttBar[], rowHeight: number): Map<string, 
 
                         // Одиночная полоса без наложений — стандартный размер.
                         if (component.length === 1 && adj.get(component[0].id)!.length === 0) {
-                                result.set(component[0].id, { barHeight: 20, yOffset: 8 });
+                                result.set(component[0].id, {
+                                        barHeight: tokens.bar.height,
+                                        yOffset: tokens.bar.paddingTop,
+                                });
                                 continue;
                         }
 
@@ -107,8 +111,8 @@ export function computeLayout(bars: GanttBar[], rowHeight: number): Map<string, 
                         for (const bar of component) {
                                 const subRow = subRows.get(bar.id) ?? 0;
                                 result.set(bar.id, {
-                                        barHeight: Math.max(6, Math.floor(slotHeight) - 4),
-                                        yOffset: subRow * slotHeight + 2,
+                                        barHeight: Math.max(tokens.bar.minHeight, Math.floor(slotHeight) - tokens.bar.slotPaddingH),
+                                        yOffset: subRow * slotHeight + tokens.bar.slotPaddingY,
                                 });
                         }
                 }

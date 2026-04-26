@@ -1,6 +1,7 @@
 import { useGanttStore } from "../store/useGanttStore";
 import { saveToFile, loadFromFile } from "../utils/fileio";
 import { exportToPng } from "../utils/exportPng";
+import { tokens } from "../styles/tokens";
 
 interface Props {
         svgRef: React.RefObject<SVGSVGElement | null>;
@@ -52,40 +53,40 @@ export function RowsPanel({ svgRef }: Props) {
         };
 
         return (
-                <div style={{ padding: 12, display: "flex", flexDirection: "column", gap: 6 }}>
-                        <strong style={{ fontSize: 13 }}>Годы</strong>
+                <div style={{ padding: tokens.panel.padding, display: "flex", flexDirection: "column", gap: 6 }}>
+                        <strong style={{ fontSize: tokens.font.sectionTitle }}>Годы</strong>
                         {years.map((year, i) => (
                                 <div key={i} style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                                        <span style={{ fontSize: 11, color: "#888", minWidth: 16 }}>{i + 1}.</span>
+                                        <span style={{ fontSize: tokens.font.medium, color: tokens.panel.mutedColor, minWidth: 16 }}>{i + 1}.</span>
                                         <input
                                                 value={year.label}
                                                 onChange={(e) => updateYearLabel(i, e.target.value)}
-                                                style={{ flex: 1, fontSize: 12 }}
+                                                style={{ flex: 1, fontSize: tokens.font.label }}
                                         />
                                         {years.length > 1 && i === years.length - 1 && (
-                                                <button onClick={removeLastYear} style={{ fontSize: 12 }}>✕</button>
+                                                <button onClick={removeLastYear} style={{ fontSize: tokens.font.label }}>✕</button>
                                         )}
                                 </div>
                         ))}
-                        <button onClick={addYear} style={{ fontSize: 12, marginTop: 4 }}>+ Добавить год</button>
+                        <button onClick={addYear} style={{ fontSize: tokens.font.label, marginTop: 4 }}>+ Добавить год</button>
 
-                        <hr style={{ margin: "8px 0", border: "none", borderTop: "1px solid #ddd" }} />
+                        <hr style={{ margin: "8px 0", border: "none", borderTop: `1px solid ${tokens.panel.borderColor}` }} />
 
-                        <strong style={{ fontSize: 13 }}>Строки</strong>
+                        <strong style={{ fontSize: tokens.font.sectionTitle }}>Строки</strong>
                         {rows.map((r, i) => (
                                 <div key={i} style={{ display: "flex", gap: 6 }}>
                                         <input value={r} onChange={(e) => update(i, e.target.value)}
-                                                style={{ flex: 1, fontSize: 12 }} />
-                                        <button onClick={() => remove(i)} style={{ fontSize: 12 }}>✕</button>
+                                                style={{ flex: 1, fontSize: tokens.font.label }} />
+                                        <button onClick={() => remove(i)} style={{ fontSize: tokens.font.label }}>✕</button>
                                 </div>
                         ))}
-                        <button onClick={add} style={{ fontSize: 12, marginTop: 4 }}>+ Добавить строку</button>
+                        <button onClick={add} style={{ fontSize: tokens.font.label, marginTop: 4 }}>+ Добавить строку</button>
 
-                        <hr style={{ margin: "8px 0", border: "none", borderTop: "1px solid #ddd" }} />
+                        <hr style={{ margin: "8px 0", border: "none", borderTop: `1px solid ${tokens.panel.borderColor}` }} />
 
-                        <button onClick={handleSave} style={{ fontSize: 12 }}>Сохранить</button>
-                        <button onClick={handleLoad} style={{ fontSize: 12 }}>Загрузить</button>
-                        <button onClick={handleExport} style={{ fontSize: 12 }}>Экспортировать</button>
+                        <button onClick={handleSave} style={{ fontSize: tokens.font.label }}>Сохранить</button>
+                        <button onClick={handleLoad} style={{ fontSize: tokens.font.label }}>Загрузить</button>
+                        <button onClick={handleExport} style={{ fontSize: tokens.font.label }}>Экспортировать</button>
                 </div>
         );
 }

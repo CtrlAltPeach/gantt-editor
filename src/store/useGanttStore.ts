@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { GanttConfig, GanttBar, GanttConnection } from "../types/gantt";
+import { tokens } from "../styles/tokens";
 
 /** Глобальное состояние приложения и набор действий для его изменения. */
 interface GanttStore {
@@ -38,10 +39,10 @@ export const useGanttStore = create<GanttStore>((set) => ({
                         { label: "Год 1", months: ["Янв", "Фев", "Март", "Апр", "Май", "Июнь", "Июль", "Авг", "Сен", "Окт", "Ноя", "Дек"] },
                 ],
                 rows: ["Монтаж оборудования", "ПНР", "Надземная часть", "Подземная часть", "Инженерные сети", "Дороги и благоустройство"],
-                cellWidth: 40,
-                rowHeight: 36,
-                headerHeight: 24,
-                labelWidth: 160,
+                cellWidth: tokens.grid.defaultCellWidth,
+                rowHeight: tokens.grid.defaultRowHeight,
+                headerHeight: tokens.grid.defaultHeaderHeight,
+                labelWidth: tokens.grid.defaultLabelWidth,
         },
         bars: [],
         connections: [],

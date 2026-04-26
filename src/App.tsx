@@ -1,13 +1,14 @@
 import { useRef } from "react";
 import { GanttGrid } from "./components/GanttGrid";
 import { RowsPanel } from "./components/RowsPanel";
+import { tokens } from "./styles/tokens";
 
 export default function App() {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   return (
     <div style={{ display: "flex", height: "100%" }}>
-      <aside style={{ width: 220, borderRight: "1px solid #ddd", overflowY: "auto" }}>
+      <aside style={{ width: tokens.panel.width, borderRight: `1px solid ${tokens.panel.borderColor}`, overflowY: "auto" }}>
         <RowsPanel svgRef={svgRef} />
       </aside>
       <main style={{ flex: 1, overflow: "auto", padding: 16 }}>
