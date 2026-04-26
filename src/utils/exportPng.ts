@@ -1,6 +1,10 @@
 import { save } from "@tauri-apps/plugin-dialog";
 import { writeFile } from "@tauri-apps/plugin-fs";
 
+/**
+ * Экспортирует SVG-элемент в PNG-файл через системный диалог «Сохранить как».
+ * Рисует SVG на Canvas с масштабом ×2 для чёткости на экранах с высоким DPI.
+ */
 export async function exportToPng(svgElement: SVGSVGElement): Promise<void> {
         const path = await save({
                 filters: [{ name: "PNG", extensions: ["png"] }],
@@ -8,6 +12,7 @@ export async function exportToPng(svgElement: SVGSVGElement): Promise<void> {
         });
         if (!path) return;
 
+        // Сериализуем SVG в blob, чтобы загрузить его через Image.
         const svgData = new XMLSerializer().serializeToString(svgElement);
         const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
         const url = URL.createObjectURL(svgBlob);
@@ -16,6 +21,7 @@ export async function exportToPng(svgElement: SVGSVGElement): Promise<void> {
         img.src = url;
         await new Promise((res) => (img.onload = res));
 
+        // Canvas в 2× разрешении — иначе PNG выглядит размытым на Retina.
         const canvas = document.createElement("canvas");
         canvas.width = svgElement.width.baseVal.value * 2;
         canvas.height = svgElement.height.baseVal.value * 2;
@@ -24,6 +30,7 @@ export async function exportToPng(svgElement: SVGSVGElement): Promise<void> {
         ctx.drawImage(img, 0, 0);
         URL.revokeObjectURL(url);
 
+        // Конвертируем base64 DataURL в бинарный массив для записи через Tauri FS.
         const dataUrl = canvas.toDataURL("image/png");
         const base64 = dataUrl.split(",")[1];
         const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));

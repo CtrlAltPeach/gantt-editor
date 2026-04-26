@@ -6,7 +6,7 @@ export default function App() {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div style={{ display: "flex", height: "100%" }}>
       <aside style={{ width: 220, borderRight: "1px solid #ddd", overflowY: "auto" }}>
         <RowsPanel svgRef={svgRef} />
       </aside>

@@ -1,7 +1,70 @@
-# Tauri + React + Typescript
+# Gantt Editor
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+Десктопное приложение для создания и редактирования диаграмм Ганта. Разработано на Tauri + React + TypeScript.
 
-## Recommended IDE Setup
+## Стек
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- **Tauri** — десктопный контейнер (Rust)
+- **React + TypeScript** — UI
+- **Zustand** — управление состоянием
+- **SVG** — рендер диаграммы
+
+## Возможности
+
+### Сетка
+- Двухуровневый заголовок: годы и месяцы
+- Настраиваемое количество строк (виды работ)
+- Переименование строк в боковой панели
+- Добавление и удаление строк
+
+### Полосы (Bar)
+- Рисование: зажать мышь на ячейке и тянуть
+- Выбор цвета (8 цветов, по одному на здание)
+- Метка — номер или название
+- Два типа: сплошная и пунктирная
+- Snap при создании: 0, 1/3, 1/2, 2/3, 1 от ширины ячейки
+- Подсказка с дробью у курсора при рисовании
+- Удаление кнопкой ✕ на полосе
+
+### Drag & Drop
+- Перетаскивание полос по горизонтали и вертикали
+- Snap к точкам сетки при перетаскивании
+
+### Файлы
+- Сохранение диаграммы в JSON
+- Загрузка диаграммы из JSON
+- Экспорт в PNG (2x разрешение, для вставки в Word)
+
+## Структура проекта
+
+```
+src/
+  components/
+    GanttGrid.tsx      # SVG-сетка, рисование полос
+    GanttBar.tsx       # компонент полосы с drag
+    RowsPanel.tsx      # боковая панель
+  store/
+    useGanttStore.ts   # Zustand store
+  types/
+    gantt.ts           # типы GanttConfig, GanttBar
+  utils/
+    fileio.ts          # сохранение/загрузка JSON
+    exportPng.ts       # экспорт SVG → PNG
+  App.tsx
+src-tauri/             # Rust/Tauri бэкенд
+```
+
+## Запуск
+
+```bash
+npm install
+npm run tauri dev
+```
+
+## Сборка
+
+```bash
+npm run tauri build
+```
+
+Установщик появится в `src-tauri/target/release/bundle/`.
