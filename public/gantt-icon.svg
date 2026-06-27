@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Background -->
+  <rect width="64" height="64" rx="12" fill="#1976d2"/>
+
+  <!-- Grid lines (subtle) -->
+  <line x1="16" y1="20" x2="56" y2="20" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <line x1="16" y1="28" x2="56" y2="28" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <line x1="16" y1="36" x2="56" y2="36" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <line x1="16" y1="44" x2="56" y2="44" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+  <!-- Gantt bars -->
+  <rect x="18" y="14" width="24" height="4" rx="2" fill="#66BB6A"/>
+  <rect x="18" y="22" width="32" height="4" rx="2" fill="#FFA726"/>
+  <rect x="26" y="30" width="20" height="4" rx="2" fill="#EF5350"/>
+  <rect x="18" y="38" width="28" height="4" rx="2" fill="#AB47BC"/>
+
+  <!-- Connection arrow -->
+  <path d="M 42 16 L 48 16 L 48 24 L 50 24" stroke="white" stroke-width="1.5" fill="none" stroke-opacity="0.7"/>
+  <path d="M 48 24 L 51 24 L 48 26 Z" fill="white" fill-opacity="0.7"/>
+</svg>

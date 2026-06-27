@@ -1,70 +1,67 @@
 # Gantt Editor
 
-Десктопное приложение для создания и редактирования диаграмм Ганта. Разработано на Tauri + React + TypeScript.
+A modern, interactive Gantt chart editor built with React, TypeScript, and SVG. Create, edit, and manage project timelines with an intuitive drag-and-drop interface.
 
-## Стек
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-- **Tauri** — десктопный контейнер (Rust)
-- **React + TypeScript** — UI
-- **Zustand** — управление состоянием
-- **SVG** — рендер диаграммы
+## ✨ Features
 
-## Возможности
+- 🎨 **Material Design** UI with light/dark themes
+- 📊 **Drag & drop** bars with smart layout
+- 🔗 **Dependency arrows** between tasks
+- ⚡ **Undo/Redo** with full history
+- 🎯 **Snap-to-grid** for precise placement
+- 📏 **Zoom controls** (0.6x - 2.4x)
+- 💾 **Save/Load** projects as JSON
+- 🌈 **10 Tailwind colors** for quick categorization
+- 🔢 **Auto-numbering** based on color palette
 
-### Сетка
-- Двухуровневый заголовок: годы и месяцы
-- Настраиваемое количество строк (виды работ)
-- Переименование строк в боковой панели
-- Добавление и удаление строк
-
-### Полосы (Bar)
-- Рисование: зажать мышь на ячейке и тянуть
-- Выбор цвета (8 цветов, по одному на здание)
-- Метка — номер или название
-- Два типа: сплошная и пунктирная
-- Snap при создании: 0, 1/3, 1/2, 2/3, 1 от ширины ячейки
-- Подсказка с дробью у курсора при рисовании
-- Удаление кнопкой ✕ на полосе
-
-### Drag & Drop
-- Перетаскивание полос по горизонтали и вертикали
-- Snap к точкам сетки при перетаскивании
-
-### Файлы
-- Сохранение диаграммы в JSON
-- Загрузка диаграммы из JSON
-- Экспорт в PNG (2x разрешение, для вставки в Word)
-
-## Структура проекта
-
-```
-src/
-  components/
-    GanttGrid.tsx      # SVG-сетка, рисование полос
-    GanttBar.tsx       # компонент полосы с drag
-    RowsPanel.tsx      # боковая панель
-  store/
-    useGanttStore.ts   # Zustand store
-  types/
-    gantt.ts           # типы GanttConfig, GanttBar
-  utils/
-    fileio.ts          # сохранение/загрузка JSON
-    exportPng.ts       # экспорт SVG → PNG
-  App.tsx
-src-tauri/             # Rust/Tauri бэкенд
-```
-
-## Запуск
+## 🚀 Quick Start
 
 ```bash
+# Install dependencies
 npm install
-npm run tauri dev
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
 ```
 
-## Сборка
+Open [http://localhost:1420](http://localhost:1420) in your browser.
 
-```bash
-npm run tauri build
-```
+## 📖 Documentation
 
-Установщик появится в `src-tauri/target/release/bundle/`.
+For detailed documentation, see [`.ai/README.md`](.ai/README.md)
+
+- [Changelog](.ai/CHANGELOG.md) - Release history
+- [Roadmap](.ai/NEXT.md) - Planned features
+
+## 🎯 Usage
+
+1. **Create bars**: Click and drag on the grid
+2. **Move bars**: Drag bar body
+3. **Resize bars**: Drag bar edges
+4. **Create connections**: Shift+drag from bar edge to another bar
+5. **Edit**: Right-click for context menu
+
+## 🛠️ Tech Stack
+
+- React 19 + TypeScript
+- Vite
+- Zustand (state management)
+- SVG rendering
+
+## 📝 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions welcome! Please feel free to submit a Pull Request.
+
+---
+
+**Built with ❤️ by the Gantt Editor team**

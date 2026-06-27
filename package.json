@@ -1,8 +1,24 @@
 {
   "name": "gantt-editor",
   "private": true,
-  "version": "0.1.1",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Modern interactive Gantt chart editor with drag-and-drop, dependencies, and material design",
+  "author": "Gantt Editor Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/gantt-editor.git"
+  },
+  "keywords": [
+    "gantt",
+    "chart",
+    "timeline",
+    "project-management",
+    "react",
+    "typescript",
+    "svg"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

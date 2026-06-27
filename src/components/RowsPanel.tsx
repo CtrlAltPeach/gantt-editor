@@ -1,91 +1,184 @@
+import type { RefObject } from "react";
 import { useGanttStore } from "../store/useGanttStore";
+import { useThemeStore } from "../store/useThemeStore";
 import { saveToFile, loadFromFile } from "../utils/fileio";
 import { exportToPng } from "../utils/exportPng";
 
 interface Props {
-        svgRef: React.RefObject<SVGSVGElement | null>;
+  svgRef: RefObject<SVGSVGElement | null>;
 }
 
-const MONTHS: string[] = ["Янв", "Фев", "Март", "Апр", "Май", "Июнь", "Июль", "Авг", "Сен", "Окт", "Ноя", "Дек"];
+const MONTHS: string[] = [
+  "Янв",
+  "Фев",
+  "Март",
+  "Апр",
+  "Май",
+  "Июнь",
+  "Июль",
+  "Авг",
+  "Сен",
+  "Окт",
+  "Ноя",
+  "Дек",
+];
 
 export function RowsPanel({ svgRef }: Props) {
-        const { config, bars, connections, setRows, setYears } = useGanttStore();
-        const rows = config.rows;
-        const years = config.years;
+  const { config, bars, connections, setRows, setYears } = useGanttStore();
+  const { toggle, isDark } = useThemeStore();
+  const rows = config.rows;
+  const years = config.years;
 
-        const update = (i: number, val: string) => {
-                const next = [...rows];
-                next[i] = val;
-                setRows(next);
-        };
+  const update = (i: number, val: string) => {
+    const next = [...rows];
+    next[i] = val;
+    setRows(next);
+  };
 
-        const add = () => setRows([...rows, `Работа ${rows.length + 1}`]);
-        const remove = (i: number) => setRows(rows.filter((_, idx) => idx !== i));
+  const add = () => setRows([...rows, `Работа ${rows.length + 1}`]);
+  const remove = (i: number) => setRows(rows.filter((_, idx) => idx !== i));
 
-        const addYear = () =>
-                setYears([...years, { label: `Год ${years.length + 1}`, months: [...MONTHS] }]);
-        const removeLastYear = () => {
-                if (years.length <= 1) return;
-                setYears(years.slice(0, -1));
-        };
-        const updateYearLabel = (i: number, label: string) => {
-                const next = [...years];
-                next[i] = { ...next[i], label };
-                setYears(next);
-        };
+  const addYear = () =>
+    setYears([
+      ...years,
+      { label: `Год ${years.length + 1}`, months: [...MONTHS] },
+    ]);
+  const removeLastYear = () => {
+    if (years.length <= 1) return;
+    setYears(years.slice(0, -1));
+  };
+  const updateYearLabel = (i: number, label: string) => {
+    const next = [...years];
+    next[i] = { ...next[i], label };
+    setYears(next);
+  };
 
-        const handleSave = async () => {
-                await saveToFile({ rows, years, bars, connections });
-        };
+  const handleSave = async () => {
+    await saveToFile({ rows, years, bars, connections });
+  };
 
-        const handleLoad = async () => {
-                const data = await loadFromFile();
-                if (!data) return;
-                setRows(data.rows);
-                if (data.years) setYears(data.years);
-                useGanttStore.setState({ bars: data.bars, connections: data.connections ?? [] });
-        };
+  const handleLoad = async () => {
+    const data = await loadFromFile();
+    if (!data) return;
+    setRows(data.rows);
+    if (data.years) setYears(data.years);
+    useGanttStore.setState({
+      bars: data.bars,
+      connections: data.connections ?? [],
+    });
+  };
 
-        const handleExport = async () => {
-                if (!svgRef.current) return;
-                await exportToPng(svgRef.current);
-        };
+  const handleExport = async () => {
+    if (!svgRef.current) return;
+    await exportToPng(svgRef.current);
+  };
 
-        return (
-                <div style={{ padding: 12, display: "flex", flexDirection: "column", gap: 6 }}>
-                        <strong style={{ fontSize: 13 }}>Годы</strong>
-                        {years.map((year, i) => (
-                                <div key={i} style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                                        <span style={{ fontSize: 11, color: "#888", minWidth: 16 }}>{i + 1}.</span>
-                                        <input
-                                                value={year.label}
-                                                onChange={(e) => updateYearLabel(i, e.target.value)}
-                                                style={{ flex: 1, fontSize: 12 }}
-                                        />
-                                        {years.length > 1 && i === years.length - 1 && (
-                                                <button onClick={removeLastYear} style={{ fontSize: 12 }}>✕</button>
-                                        )}
-                                </div>
-                        ))}
-                        <button onClick={addYear} style={{ fontSize: 12, marginTop: 4 }}>+ Добавить год</button>
+  return (
+    <div className="panel">
+      <section className="panel-section">
+        <div className="section-heading">
+          <div className="section-title">
+            <span className="section-icon">📅</span>
+            Годы
+          </div>
+          <span className="section-meta">{years.length}</span>
+        </div>
 
-                        <hr style={{ margin: "8px 0", border: "none", borderTop: "1px solid #ddd" }} />
+        <div className="form-list">
+          {years.map((year, i) => (
+            <div key={i} className="form-row">
+              <span className="row-index">{i + 1}</span>
+              <input
+                className="material-input"
+                value={year.label}
+                onChange={(e) => updateYearLabel(i, e.target.value)}
+              />
+              {years.length > 1 && i === years.length - 1 ? (
+                <button
+                  className="icon-button"
+                  onClick={removeLastYear}
+                  title="Удалить последний год"
+                >
+                  ✕
+                </button>
+              ) : (
+                <span />
+              )}
+            </div>
+          ))}
+        </div>
 
-                        <strong style={{ fontSize: 13 }}>Строки</strong>
-                        {rows.map((r, i) => (
-                                <div key={i} style={{ display: "flex", gap: 6 }}>
-                                        <input value={r} onChange={(e) => update(i, e.target.value)}
-                                                style={{ flex: 1, fontSize: 12 }} />
-                                        <button onClick={() => remove(i)} style={{ fontSize: 12 }}>✕</button>
-                                </div>
-                        ))}
-                        <button onClick={add} style={{ fontSize: 12, marginTop: 4 }}>+ Добавить строку</button>
+        <button className="material-button full" onClick={addYear}>
+          + Добавить год
+        </button>
+      </section>
 
-                        <hr style={{ margin: "8px 0", border: "none", borderTop: "1px solid #ddd" }} />
+      <section className="panel-section">
+        <div className="section-heading">
+          <div className="section-title">
+            <span className="section-icon">☰</span>
+            Строки
+          </div>
+          <span className="section-meta">{rows.length}</span>
+        </div>
 
-                        <button onClick={handleSave} style={{ fontSize: 12 }}>Сохранить</button>
-                        <button onClick={handleLoad} style={{ fontSize: 12 }}>Загрузить</button>
-                        <button onClick={handleExport} style={{ fontSize: 12 }}>Экспортировать</button>
-                </div>
-        );
+        <div className="form-list">
+          {rows.map((row, i) => (
+            <div key={i} className="form-row simple">
+              <input
+                className="material-input"
+                value={row}
+                onChange={(e) => update(i, e.target.value)}
+              />
+              <button
+                className="icon-button"
+                onClick={() => remove(i)}
+                title="Удалить строку"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <button className="material-button full" onClick={add}>
+          + Добавить строку
+        </button>
+      </section>
+
+      <section className="panel-section">
+        <div className="section-heading">
+          <div className="section-title">
+            <span className="section-icon">💾</span>
+            Файлы
+          </div>
+        </div>
+
+        <div className="button-stack">
+          <button className="material-button filled full" onClick={handleSave}>
+            Сохранить JSON
+          </button>
+          <button className="material-button full" onClick={handleLoad}>
+            Загрузить JSON
+          </button>
+          <button className="material-button full" onClick={handleExport}>
+            Экспорт PNG
+          </button>
+        </div>
+      </section>
+
+      <section className="panel-section">
+        <div className="section-heading">
+          <div className="section-title">
+            <span className="section-icon">🎨</span>
+            Вид
+          </div>
+        </div>
+
+        <button className="material-button full" onClick={toggle}>
+          {isDark ? "☀ Светлая тема" : "🌙 Тёмная тема"}
+        </button>
+      </section>
+    </div>
+  );
 }
